@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
 import 'dart:ui';
-import 'package:sneak_crib/product.dart';
+import 'package:sneak_crib/core/models/product.dart';
 
 //class for project data
 class Repository {

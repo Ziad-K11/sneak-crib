@@ -1,8 +1,8 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 // import 'package:project/main.dart';
-import 'main.dart';
-import 'SignUp.dart';
+import '../../main.dart';
+import '../../SignUp.dart';
 
 class LoginPage extends StatefulWidget {
   @override

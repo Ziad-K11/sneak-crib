@@ -1,6 +1,6 @@
 import 'package:contactus/contactus.dart';
 import 'package:flutter/material.dart';
-import 'main.dart';
+import '../../../main.dart';
 
 Widget _buildBottomNav() {
   return AnimatedContainer(
