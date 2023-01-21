@@ -1,8 +1,12 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-// import 'package:project/main.dart';
-import '../../main.dart';
-import '../../SignUp.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sneak_crib/core/widgets/reusable_button.dart';
+import 'package:sneak_crib/home/presentation/pages/home_screen.dart';
+import 'package:sneak_crib/login/presentation/cubit/login_cubit.dart';
+import 'package:sneak_crib/login/presentation/cubit/login_state.dart';
+import '../../../signup/presentation/pages/SignUp.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,57 +16,48 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
-  var _controller1 = TextEditingController();
+  final emailController = TextEditingController();
 
-  var _controller2 = TextEditingController();
+  final passwordController = TextEditingController();
 
   Widget email() {
-    return Container(
-      margin: EdgeInsets.only(left: 30, right: 30, top: 30),
-      child: TextFormField(
-        //  autovalidateMode: AutovalidateMode.always,
-        controller: _controller1,
-        maxLines: 2,
-        validator: ((value) {
-          if (value!.isEmpty ||
-              !(RegExp(
-                      r'^[a-z A-Z]([\w]|-|[\.])*[@]{1}[a-z A-Z]{5,8}[\.]{1}[a-z A-Z]{2,3}$')
-                  .hasMatch(value))) {
-            return "Enter Correct Email";
-          } else {
-            return null;
-          }
-        }),
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          hintText: "Name@gmail.com",
-          labelText: "Email",
-        ),
+    return TextFormField(
+      //  autovalidateMode: AutovalidateMode.always,
+      controller: emailController,
+      validator: ((value) {
+        if (value!.isEmpty ||
+            !(RegExp(
+                    r'^[a-z A-Z]([\w]|-|[\.])*[@]{1}[a-z A-Z]{5,8}[\.]{1}[a-z A-Z]{2,3}$')
+                .hasMatch(value))) {
+          return "Enter Correct Email";
+        } else {
+          return null;
+        }
+      }),
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: "Name@gmail.com",
+        labelText: "Email",
       ),
     );
   }
 
   Widget password() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 30),
-      child: TextFormField(
-        validator: (value) {
-          if (value!.isEmpty ||
-              !(RegExp(r'^[a-z A-Z]{1}[\w]*$')).hasMatch(value)) {
-            return ("Enter Correct Password");
-          } else {
-            return null;
-          }
-        },
-        controller: _controller2,
-        maxLines: 2,
-        // autovalidateMode: AutovalidateMode.always,
-        decoration: InputDecoration(
-          hintText: "Password",
-          labelText: "Password",
-          border: OutlineInputBorder(),
-          focusedBorder: OutlineInputBorder(),
-        ),
+    return TextFormField(
+      validator: (value) {
+        if (value!.isEmpty || value.length < 8) {
+          return ("Enter Correct Password");
+        } else {
+          return null;
+        }
+      },
+      controller: passwordController,
+      // autovalidateMode: AutovalidateMode.always,
+      decoration: const InputDecoration(
+        hintText: "Password",
+        labelText: "Password",
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(),
       ),
     );
   }
@@ -71,128 +66,101 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (_) => NikeShoesShop()),
-                  (route) => false);
-            },
-            icon: Icon(Icons.arrow_back)),
-        title: Text('Login Page'),
-        backgroundColor: Color(0xff1d1f21),
+        title: const Text('Login'),
+        backgroundColor: const Color(0xff1d1f21),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [Colors.white, Colors.white38])),
-          child: Center(
-            child: Form(
-                key: _formKey,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/extra/logo.png",
-                        height: 200,
-                        width: double.infinity,
-                      ),
-                      email(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      password(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            TextButton(
-                                style: TextButton.styleFrom(
-                                    primary: Colors.white,
-                                    shadowColor: Colors.white,
-                                    side: BorderSide.none),
-                                onPressed: () {},
-                                child: Text(
-                                  "Sign In",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                )),
-                            SizedBox(
-                              width: 201,
-                            ),
-                            FloatingActionButton(
-                                child: Icon(Icons.east),
-                                backgroundColor:
-                                    Color.fromARGB(255, 196, 4, 20),
+      body: BlocProvider<LoginCubit>(
+        create: (context) => LoginCubit(),
+        child: BlocConsumer<LoginCubit, LoginState>(
+          listener: (context, state) {
+            if (state is UserLoginSuccessState) {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const NikeShoesHome()));
+            }
+          },
+          builder: (context, state) {
+            return Padding(
+              padding: const EdgeInsets.all(20),
+              child: SingleChildScrollView(
+                child: Container(
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [Colors.white, Colors.white38])),
+                  child: Center(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/extra/logo.png",
+                            height: 200,
+                            width: double.infinity,
+                          ),
+                          email(),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          password(),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          ConditionalBuilder(
+                            condition: state is UserLoginLoadingState,
+                            builder: (context) =>
+                                const CircularProgressIndicator(),
+                            fallback: (context) => SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: ReusableButton(
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
-                                    // final snackbar = SnackBar(
-                                    //   content: Text(
-                                    //       "Email ${_controller1.value.text} "),
-                                    // );
-                                    // ScaffoldMessenger.of(context)
-                                    //     .showSnackBar(snackbar);
-                                    var snackBar = SnackBar(
-                                      elevation: 0,
-                                      behavior: SnackBarBehavior.floating,
-                                      backgroundColor: Colors.transparent,
-                                      content: AwesomeSnackbarContent(
-                                        color: Colors.green,
-                                        title: 'Email',
-                                        message: "${_controller1.value.text}",
-                                        contentType: ContentType.failure,
-                                      ),
-                                    );
-
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const NikeShoesShop()));
+                                    LoginCubit.get(context).userLogin(
+                                        email: emailController.text,
+                                        password: passwordController.text);
                                   }
-                                }),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 35),
-                        child: Row(
-                          children: [
-                            TextButton(
-                                onPressed: () {
-                                  NavigateToSignUp(context);
                                 },
-                                child: Text(
-                                  "Sign Up",
-                                  style: TextStyle(color: Colors.black),
-                                )),
-                            SizedBox(
-                              width: 90,
+                                text: 'Login',
+                              ),
                             ),
-                            TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  "Forget Password",
-                                  style: TextStyle(color: Colors.black),
-                                )),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 35),
+                            child: Row(
+                              children: [
+                                TextButton(
+                                    onPressed: () {
+                                      NavigateToSignUp(context);
+                                    },
+                                    child: const Text(
+                                      "Sign Up",
+                                      style: TextStyle(color: Colors.black),
+                                    )),
+                                const SizedBox(
+                                  width: 90,
+                                ),
+                                /* TextButton(
+                                  onPressed: () {},
+                                  child: const Text(
+                                    "Forget Password",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),*/
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ])),
-          ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
