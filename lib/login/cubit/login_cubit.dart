@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sneak_crib/core/utils/shared_preferences.dart';
-import 'package:sneak_crib/login/presentation/cubit/login_state.dart';
+import 'package:sneak_crib/core/utils/shared_prefrences.dart';
+import 'package:sneak_crib/login/cubit/login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(LoginInitial());

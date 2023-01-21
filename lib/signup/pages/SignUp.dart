@@ -1,7 +1,12 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'main.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sneak_crib/core/widgets/reusable_button.dart';
+import 'package:sneak_crib/home/pages/home_screen.dart';
+import 'package:sneak_crib/signup/cubit/sign_up_cubit.dart';
+import '../../../main.dart';
 
-import 'Login.dart';
+import '../../../login/pages/Login.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -11,97 +16,87 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  var _formKey1 = GlobalKey<FormState>();
+  final _signupFormKey = GlobalKey<FormState>();
 
-  var _controller3 = TextEditingController();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final phoneController = TextEditingController();
 
-  var _controller4 = TextEditingController();
-  var _controller5 = TextEditingController();
-  var _controller6 = TextEditingController();
   Widget Name() {
-    return Container(
-      margin: EdgeInsets.only(left: 30, right: 30),
-      child: TextFormField(
-        controller: _controller3,
-        validator: ((value) {
-          if (value!.isEmpty || !RegExp(r'^[\w]+$').hasMatch(value)) {
-            return "Enter your name correctly";
-          } else
-            return null;
-        }),
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: "Name",
-          hintText: "Name",
-        ),
+    return TextFormField(
+      controller: nameController,
+      validator: ((value) {
+        if (value!.isEmpty || !RegExp(r'^[\w]+$').hasMatch(value)) {
+          return "Enter your name correctly";
+        } else {
+          return null;
+        }
+      }),
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: "Name",
+        hintText: "Name",
       ),
     );
   }
 
   Widget email() {
     return Container(
-      margin: EdgeInsets.only(left: 30, right: 30),
-      child: Container(
-          child: TextFormField(
-        controller: _controller4,
-        validator: ((value) {
-          if (value!.isEmpty ||
-              !RegExp(r'^[a-z A-Z]([\w]|-|[\.])*[@]{1}[a-z A-Z]{5,8}[\.]{1}[a-z A-Z]{2,3}$')
-                  .hasMatch(value)) {
-            return "Enter your email correctly";
-          } else
-            return null;
-        }),
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: "Email",
-          hintText: "email@gmail.com",
-        ),
-      )),
-    );
+        child: TextFormField(
+      controller: emailController,
+      validator: ((value) {
+        if (value!.isEmpty ||
+            !RegExp(r'^[a-z A-Z]([\w]|-|[\.])*[@]{1}[a-z A-Z]{5,8}[\.]{1}[a-z A-Z]{2,3}$')
+                .hasMatch(value)) {
+          return "Enter your email correctly";
+        } else {
+          return null;
+        }
+      }),
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: "Email",
+        hintText: "email@gmail.com",
+      ),
+    ));
   }
 
   Widget password() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 30),
-      child: TextFormField(
-        validator: (value) {
-          if (value!.isEmpty ||
-              !(RegExp(r'^[a-z A-Z]{1}[\w]*$')).hasMatch(value)) {
-            return ("Enter Correct Password");
-          } else {
-            return null;
-          }
-        },
-        controller: _controller5,
-        maxLines: 1,
-        // autovalidateMode: AutovalidateMode.always,
-        decoration: InputDecoration(
-          hintText: "Password",
-          labelText: "Password",
-          border: OutlineInputBorder(),
-          focusedBorder: OutlineInputBorder(),
-        ),
+    return TextFormField(
+      validator: (value) {
+        if (value!.isEmpty || value.length < 8) {
+          return ("Enter Correct Password");
+        } else {
+          return null;
+        }
+      },
+      controller: passwordController,
+      maxLines: 1,
+      // autovalidateMode: AutovalidateMode.always,
+      decoration: const InputDecoration(
+        hintText: "Password",
+        labelText: "Password",
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(),
       ),
     );
   }
 
   Widget PhoneNumber() {
-    return Container(
-      margin: EdgeInsets.only(left: 30, right: 30),
-      child: TextFormField(
-        controller: _controller6,
-        validator: ((value) {
-          if (value!.isEmpty || !RegExp(r'^[\d]{11}$').hasMatch(value)) {
-            return "please enter your number correctly";
-          } else
-            return null;
-        }),
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: "Phone Number",
-          hintText: "Enter Your Number Here",
-        ),
+    return TextFormField(
+      controller: phoneController,
+      validator: ((value) {
+        if (value!.isEmpty || !RegExp(r'^[\d]{11}$').hasMatch(value)) {
+          return "please enter your number correctly";
+        } else {
+          return null;
+        }
+      }),
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: "Phone Number",
+        hintText: "Enter Your Number Here",
       ),
     );
   }
@@ -109,98 +104,101 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [Color(0xff1d1f21), Color(0xc40414)])),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey1,
-            child: Column(children: [
-              SizedBox(height: 20),
-              Container(
-                margin: EdgeInsets.only(left: 10),
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  FloatingActionButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Icon(Icons.west),
-                    backgroundColor: Colors.black45,
-                  ),
-                ]),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Text(
-                "Create Account",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 30),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Name(),
-              SizedBox(
-                height: 30,
-              ),
-              email(),
-              SizedBox(
-                height: 30,
-              ),
-              password(),
-              SizedBox(
-                height: 30,
-              ),
-              PhoneNumber(),
-              SizedBox(
-                height: 30,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 25),
-                child: Row(
-                  children: [
-                    TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => LoginPage()));
-                        },
-                        child: Text(
-                          "Sign In",
-                          style: TextStyle(fontSize: 20, color: Colors.white),
-                        )),
-                    SizedBox(
-                      width: 150,
-                    ),
-                    FloatingActionButton(
-                        child: Icon(Icons.east),
-                        backgroundColor: Colors.black45,
-                        onPressed: () {
-                          if (_formKey1.currentState!.validate()) {
-                            SnackBar snackbar = SnackBar(
-                                content: Text(
-                                    "Name ${_controller3.value.text} \n email ${_controller4.value.text}"));
-
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackbar);
-
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const NikeShoesShop()));
-                          }
-                        }),
-                  ],
+      appBar: AppBar(
+        title: const Text('SignUp'),
+        backgroundColor: const Color(0xff1d1f21),
+      ),
+      body: BlocProvider<SignUpCubit>(
+        create: (context) => SignUpCubit(),
+        child: BlocConsumer<SignUpCubit, SignUpState>(
+          listener: (context, state) {
+            if (state is UserRegisterLoadingState) {
+              const Center(child: CircularProgressIndicator());
+            }
+            if (state is UserCreateSuccessState) {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const NikeShoesHome()));
+            }
+          },
+          builder: (context, state) {
+            return Container(
+              height: double.infinity,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Color(0xff1d1f21), Color(0xc40414)],
                 ),
-              )
-            ]),
-          ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: _signupFormKey,
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Create Account",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 30),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Name(),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        email(),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        password(),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        PhoneNumber(),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        ConditionalBuilder(
+                          condition: state is UserRegisterLoadingState,
+                          builder: (context) =>
+                              const CircularProgressIndicator(),
+                          fallback: (context) => ReusableButton(
+                            onPressed: () {
+                              if (_signupFormKey.currentState!.validate()) {
+                                SignUpCubit.get(context).userRegister(
+                                  name: nameController.text,
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                  phone: phoneController.text,
+                                );
+                              }
+                            },
+                            text: 'Signup',
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => LoginPage()));
+                          },
+                          child: const Text(
+                            "Sign In",
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

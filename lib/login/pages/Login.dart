@@ -3,10 +3,10 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sneak_crib/core/widgets/reusable_button.dart';
-import 'package:sneak_crib/home/presentation/pages/home_screen.dart';
-import 'package:sneak_crib/login/presentation/cubit/login_cubit.dart';
-import 'package:sneak_crib/login/presentation/cubit/login_state.dart';
-import '../../../signup/presentation/pages/SignUp.dart';
+import 'package:sneak_crib/home/pages/home_screen.dart';
+import 'package:sneak_crib/login/cubit/login_cubit.dart';
+import 'package:sneak_crib/login/cubit/login_state.dart';
+import '../../../signup/pages/SignUp.dart';
 
 class LoginPage extends StatefulWidget {
   @override

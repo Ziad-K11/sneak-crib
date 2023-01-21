@@ -2,11 +2,11 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sneak_crib/core/widgets/reusable_button.dart';
-import 'package:sneak_crib/home/presentation/pages/home_screen.dart';
-import 'package:sneak_crib/signup/presentation/cubit/sign_up_cubit.dart';
+import 'package:sneak_crib/home/pages/home_screen.dart';
+import 'package:sneak_crib/signup/cubit/sign_up_cubit.dart';
 import '../../../main.dart';
 
-import '../../../login/presentation/pages/Login.dart';
+import '../../../login/pages/Login.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
