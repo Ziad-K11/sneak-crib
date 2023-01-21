@@ -19,3 +19,4 @@ class UserCreateSuccessState extends SignUpState {}
 class UserCreateErrorState extends SignUpState {
   UserCreateErrorState(String error);
 }
+//

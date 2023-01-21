@@ -3,13 +3,26 @@ import 'package:flutter/material.dart';
 
 class Product {
   //members
-  String group, url;
-  Color primaryColor, textColor;
+  late String group, url, text, price;
+  late Color primaryColor, textColor;
+
   //constructor
   Product({
-    this.group = "yellow",
-    this.url = "assets/products/yellow1.png",
-    this.primaryColor = const Color(0xffffbf00),
-    this.textColor = const Color(0xff1d1f20),
+    required this.group,
+    required this.url,
+    required this.text,
+    required this.price,
+    required this.primaryColor,
+    required this.textColor,
   });
+
+  Product.fromJson(json)
+      : group = json["group"],
+        url = json["url"],
+        text = json["text"],
+        price = json["price"];
+
+  Map<String, dynamic> toJson() {
+    return {'group': group, 'url': url, 'text': text, 'price': price};
+  }
 }
