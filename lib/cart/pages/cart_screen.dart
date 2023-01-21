@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:sneak_crib/cart/presentation/cubit/cart_cubit.dart';
+import 'package:sneak_crib/cart/cubit/cart_cubit.dart';
 import 'package:sneak_crib/core/utils/const.dart';
 import 'package:sneak_crib/core/models/product.dart';
 import 'dart:math' as math;

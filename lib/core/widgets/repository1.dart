@@ -1,7 +1,8 @@
+/*
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
 import 'dart:ui';
-import 'package:sneak_crib/core/models/product.dart';
+import 'package:sneak_crib/core/widgets/product.dart';
 
 //class for project data
 class Repository {
@@ -27,14 +28,14 @@ class Repository {
   }
 
   //products groups a list of group names
-  List<String> productGroups() {
-    Set<String> groups = {};
-    for (Product _product in rawProducts()) {
-      groups.add(_product.group);
+  // List<String> productGroups() {
+  //   Set<String> groups = {};
+  //   for (Product _product in rawProducts()) {
+  //     groups.add(_product.group);
     }
     return groups.toList();
-  }
-
+  // }
+  //
   //raw products
   List<Product> rawProducts() {
     List<Product> products = [];
@@ -118,3 +119,4 @@ class Repository {
     return products;
   }
 }
+*/
